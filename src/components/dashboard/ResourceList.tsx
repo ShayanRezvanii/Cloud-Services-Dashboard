@@ -50,10 +50,12 @@ export default function ResourceList() {
         />
         <select
           value={filter}
-          onChange={(e) => setFilter(e.target.value as any)}
+          onChange={(e) =>
+            setFilter(e.target.value as "all" | "running" | "stopped" | "error")
+          }
           className="px-3 py-2 border rounded-lg w-full md:w-1/4
-                   bg-white dark:bg-gray-800 dark:text-gray-200
-                   focus:ring-2 focus:ring-blue-500 focus:outline-none"
+             bg-white dark:bg-gray-800 dark:text-gray-200
+             focus:ring-2 focus:ring-blue-500 focus:outline-none"
         >
           <option value="all">All</option>
           <option value="running">Running</option>
