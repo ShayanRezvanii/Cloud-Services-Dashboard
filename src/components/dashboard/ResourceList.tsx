@@ -119,13 +119,22 @@ export default function ResourceList() {
                   </span>
                 </span>
                 <span className="flex gap-2">
-                  <button className="px-2 py-1 text-xs bg-green-500 hover:bg-green-600 text-white rounded">
+                  <button
+                    onClick={() => startResource(r.id)}
+                    className="px-2 py-1 text-xs bg-green-500 hover:bg-green-600 text-white rounded"
+                  >
                     Start
                   </button>
-                  <button className="px-2 py-1 text-xs bg-yellow-500 hover:bg-yellow-600 text-white rounded">
+                  <button
+                    onClick={() => stopResource(r.id)}
+                    className="px-2 py-1 text-xs bg-yellow-500 hover:bg-yellow-600 text-white rounded"
+                  >
                     Stop
                   </button>
-                  <button className="px-2 py-1 text-xs bg-blue-500 hover:bg-blue-600 text-white rounded">
+                  <button
+                    onClick={() => restartResource(r.id)}
+                    className="px-2 py-1 text-xs bg-blue-500 hover:bg-blue-600 text-white rounded"
+                  >
                     Restart
                   </button>
                 </span>

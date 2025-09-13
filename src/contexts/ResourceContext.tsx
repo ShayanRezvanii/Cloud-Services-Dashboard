@@ -1,13 +1,7 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  useEffect,
-} from "react";
-import toast from "react-hot-toast";
+import { createContext, useContext, useState, ReactNode } from "react";
+import { v4 as uuid } from "uuid";
 
 export type ResourceStatus = "running" | "stopped" | "error";
 
@@ -33,64 +27,45 @@ const ResourceContext = createContext<ResourceContextProps | undefined>(
 export function ResourceProvider({ children }: { children: ReactNode }) {
   const [resources, setResources] = useState<Resource[]>([
     {
-      id: "1",
+      id: uuid(),
       name: "Server A",
-      ip: "192.168.1.10",
+      ip: "192.168.1.1",
       members: 3,
       status: "running",
     },
     {
-      id: "2",
+      id: uuid(),
       name: "Server B",
-      ip: "192.168.1.11",
+      ip: "192.168.1.2",
       members: 5,
       status: "stopped",
     },
     {
-      id: "3",
+      id: uuid(),
       name: "Server C",
-      ip: "192.168.1.12",
+      ip: "192.168.1.3",
       members: 2,
       status: "error",
     },
   ]);
 
-  const updateStatus = (id: string, status: ResourceStatus) => {
+  const startResource = (id: string) => {
     setResources((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, status } : r)),
+      prev.map((r) => (r.id === id ? { ...r, status: "running" } : r)),
     );
   };
 
-  const startResource = (id: string) => {
-    updateStatus(id, "running");
-    toast.success("Resource started successfully!");
-  };
   const stopResource = (id: string) => {
-    updateStatus(id, "stopped");
-    toast("Resource stopped");
+    setResources((prev) =>
+      prev.map((r) => (r.id === id ? { ...r, status: "stopped" } : r)),
+    );
   };
+
   const restartResource = (id: string) => {
-    updateStatus(id, "running");
-    toast.success("Resource restarted!");
+    setResources((prev) =>
+      prev.map((r) => (r.id === id ? { ...r, status: "running" } : r)),
+    );
   };
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setResources((prev) => {
-        if (prev.length === 0) return prev;
-
-        // یکی از منابع رو random انتخاب کن
-        const randomIndex = Math.floor(Math.random() * prev.length);
-        const randomStatus = ["running", "stopped", "error"][
-          Math.floor(Math.random() * 3)
-        ] as ResourceStatus;
-
-        return prev.map((r, i) =>
-          i === randomIndex ? { ...r, status: randomStatus } : r,
-        );
-      });
-    }, 7000); // هر 7 ثانیه
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <ResourceContext.Provider
